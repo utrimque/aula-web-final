@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load bootstrap5 %}
+
+{% block css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+{% endblock  %}
+
+{% block content %}
+
+<div class="container-flex">
+    {%include "nav.html"%}
+
+<div/>
+<div class="container  text-center mt-5">
+    <h1 class="pt-5 text-dark">Fórrum</h1>
+</div>
+<div class="container mt-5">
+    <div class=" row align-items-start">
+        {%for topico in topicos%}
+           {%include "topicos-card.html"%}
+        {%endfor%}
+        <div class="pagination justify-content-center">
+            {% bootstrap_pagination page_obj %}
+          </div>
+    <div/>
+    <div class ="col-4 mt-3">
+        {% if user.is_authenticated %}
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#topicoModal">
+                    Noco Tópico
+                </button>
+              </div>
+            {% else %}
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#topicoModal" disabled>
+                    Noco Tópico
+                </button>
+              </div>
+            {% endif %}
+    <div/>
+
+<div/>    
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="topicoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Novo Tópico</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url "new-topico" %} ">
+                    {% csrf_token %}
+                    <div class="form-group my-2">
+                        <input type="text" class="form-control" id="titulo" name="titulo"  placeholder="Título">
+                    </div>
+                    <div class="form-group my-2">
+                        <textarea class="form-control" name="descricao" rows="4" placeholder="Descrição"></textarea>
+                    </div>
+                    <div class="form-group my-2">
+                        <input type="text" class="form-control" name="tags" placeholder="Tags">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock  %}
